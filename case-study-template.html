@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System Intelligence Engine — Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:#07070F;
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ─── tokens ─────────────────── */
+:root{
+  --black:  #07070F;
+  --d1:     #0C0C1C;
+  --d2:     #101025;
+  --white:  #FFFFFF;
+  --off:    #F2F2F8;
+  --paper:  #FAFAFC;
+  --hi:     rgba(255,255,255,1);
+  --mid:    rgba(255,255,255,.52);
+  --lo:     rgba(255,255,255,.24);
+  --ghost:  rgba(255,255,255,.04);
+  --ink:    #0A0A18;
+  --ink2:   #44445C;
+  --ink3:   #8A8AA4;
+  --rule-d: rgba(255,255,255,.08);
+  --rule-l: #DDDDED;
+  --a:      #5C6CF2;       /* accent — one colour, used sparingly  */
+  --g:      linear-gradient(135deg,#4C6EF5 0%,#9B59F5 100%);
+  --pad:    120px;
+}
+
+/* ─── layout ─────────────────── */
+.w{max-width:1440px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+/* ─── type utilities ──────────── */
+.mono{font-family:'JetBrains Mono',monospace}
+.display{font-family:'Space Grotesk',sans-serif}
+
+/* progress bar */
+#pb{position:fixed;top:0;left:0;height:2px;width:0;background:var(--g);z-index:9999}
+
+/* placeholder */
+.ph{
+  border:1px dashed rgba(99,102,241,.18);
+  border-radius:6px;
+  background:rgba(99,102,241,.04);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:rgba(255,255,255,.18);
+  text-align:center;padding:24px;line-height:1.6;
+}
+.ph-l{background:rgba(10,10,30,.03);border-color:rgba(10,10,30,.1);color:rgba(10,10,30,.28)}
+
+
+/* ════════════════════════════════
+   §01  HERO
+   ════════════════════════════════ */
+#hero{
+  background:var(--black);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+}
+.hero-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:40px var(--pad);
+  max-width:1440px;margin:0 auto;width:100%;
+}
+.hero-bar-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:15px;font-weight:600;color:#fff;letter-spacing:-.01em;
+}
+.hero-bar-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lo);
+}
+.hero-content{
+  flex:1;padding:0 var(--pad) 64px;
+  max-width:1440px;margin:0 auto;width:100%;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.hero-kicker{
+  display:flex;align-items:center;gap:14px;margin-bottom:36px;
+}
+.hero-kicker-line{width:28px;height:1px;background:var(--a);opacity:.8}
+.hero-kicker-text{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--a);
+}
+.hero-h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;
+  font-size:clamp(64px,8vw,118px);
+  letter-spacing:-.04em;
+  line-height:.93;
+  margin-bottom:52px;
+}
+.hero-h1-plain{color:#fff;display:block}
+.hero-h1-grad{
+  display:block;
+  background:var(--g);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-rule{height:1px;background:var(--rule-d);margin-bottom:32px}
+.hero-meta{
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.hm-item{padding-right:28px;border-right:1px solid var(--rule-d);margin-right:28px}
+.hm-item:last-child{border-right:none;margin-right:0;padding-right:0}
+.hm-label{
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--lo);margin-bottom:7px;
+}
+.hm-val{font-size:14px;font-weight:500;color:#fff;line-height:1.4}
+.hero-vis{
+  max-width:1440px;margin:0 auto;width:100%;
+  padding:0 var(--pad) 100px;
+}
+.hero-vis .ph{height:480px}
+
+
+/* ════════════════════════════════
+   §02  CONTEXT STRIP
+   ════════════════════════════════ */
+#context{
+  background:var(--paper);
+  border-top:1px solid var(--rule-l);
+  border-bottom:1px solid var(--rule-l);
+}
+.ctx{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.ctx-cell{padding:36px 28px;border-right:1px solid var(--rule-l)}
+.ctx-cell:last-child{border-right:none}
+.ctx-cell label{
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:8px;
+}
+.ctx-cell span{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;
+}
+
+
+/* ════════════════════════════════
+   §03  HOOK  — statement only, no body text
+   ════════════════════════════════ */
+#hook{
+  background:var(--d1);
+  padding:200px var(--pad);
+}
+.hook-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;
+  font-size:clamp(56px,7vw,100px);
+  letter-spacing:-.04em;
+  line-height:.97;
+  color:#fff;
+  max-width:1100px;
+}
+/* The word "not" gets accent treatment — one surprising detail */
+.hook-h2 em{
+  font-style:normal;
+  color:var(--mid);
+}
+
+
+/* ════════════════════════════════
+   §04  PROBLEM
+   ════════════════════════════════ */
+#problem{background:var(--paper);padding:120px 0 100px}
+
+.prob-head{margin-bottom:64px}
+.prob-eye{
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:20px;
+}
+.prob-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;
+  font-size:clamp(38px,4.2vw,58px);
+  letter-spacing:-.03em;color:var(--ink);line-height:1.05;
+}
+.prob-sub{
+  font-size:17px;color:var(--ink2);line-height:1.65;margin-top:12px;max-width:520px;
+}
+
+/* Lifecycle — plain horizontal text, no pill nodes */
+.lifecycle{margin-bottom:80px}
+.lc-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;
+}
+.lc-flow{
+  border-top:1px solid var(--rule-l);
+  border-bottom:1px solid var(--rule-l);
+  padding:20px 0;
+  display:flex;align-items:center;flex-wrap:wrap;gap:0;
+}
+.lc-node{font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap}
+.lc-node.dim{color:var(--ink2)}
+.lc-node.hi{color:var(--a);font-weight:600}
+.lc-sep{font-family:'JetBrains Mono',monospace;font-size:11px;color:#C0C0D4;padding:0 10px}
+
+/* Failure modes — number big and light, no card backgrounds */
+.failures{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--rule-l);
+}
+.fm{padding:36px 32px;border-right:1px solid var(--rule-l);position:relative}
+.fm:last-child{border-right:none}
+.fm-bg{
+  /* Ghost number in background */
+  font-family:'Space Grotesk',sans-serif;
+  font-size:88px;font-weight:900;
+  color:rgba(10,10,40,.05);
+  line-height:1;letter-spacing:-.04em;
+  margin-bottom:-16px;
+  display:block;
+}
+.fm-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:18px;font-weight:700;color:var(--ink);margin-bottom:10px;
+}
+.fm-desc{font-size:14px;color:var(--ink2);line-height:1.68}
+
+
+/* ════════════════════════════════
+   §05  STATS  — "100%" gets full visual dominance
+   ════════════════════════════════ */
+#cost{
+  background:var(--black);
+  padding:100px 0 108px;
+  border-top:1px solid var(--rule-d);
+}
+.cost-eye{
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--lo);
+  margin-bottom:16px;
+}
+.cost-intro{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:17px;font-weight:500;color:var(--mid);max-width:480px;line-height:1.5;
+  margin-bottom:80px;
+}
+
+/* Hero stat — 100%, the single most important finding */
+.hero-stat{
+  padding:64px 0;
+  border-top:1px solid var(--rule-d);
+  border-bottom:1px solid var(--rule-d);
+  margin-bottom:56px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;gap:60px;
+}
+.hero-stat-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(96px,14vw,200px);
+  font-weight:900;
+  letter-spacing:-.05em;
+  line-height:.88;
+  color:#fff;
+}
+.hero-stat-desc{
+  max-width:340px;
+}
+.hero-stat-desc p{
+  font-size:20px;font-weight:500;color:var(--mid);line-height:1.55;
+  margin-bottom:10px;
+}
+.hero-stat-desc small{
+  font-size:13px;color:var(--lo);font-style:italic;
+}
+
+/* Supporting stats — three, smaller */
+.sub-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+}
+.sub-stat{
+  padding-right:44px;border-right:1px solid var(--rule-d);margin-right:44px;
+}
+.sub-stat:last-child{border-right:none;margin-right:0;padding-right:0}
+.sub-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(44px,5vw,72px);
+  font-weight:900;letter-spacing:-.04em;line-height:.95;
+  color:#fff;margin-bottom:14px;
+}
+.sub-lbl{font-size:14px;color:var(--mid);line-height:1.6;max-width:220px}
+
+
+/* ════════════════════════════════
+   §06  RESEARCH
+   ════════════════════════════════ */
+#research{background:var(--off);padding:120px 0}
+
+.res-top{margin-bottom:64px}
+.res-eye{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);
+  display:block;margin-bottom:20px;
+}
+.res-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(34px,3.8vw,52px);
+  letter-spacing:-.025em;color:var(--ink);line-height:1.1;max-width:640px;
+}
+
+.res-cols{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+
+.res-body{font-size:16px;color:var(--ink2);line-height:1.75;margin-bottom:36px}
+.res-methods-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);
+  margin-bottom:14px;
+}
+.res-methods{border-top:1px solid var(--rule-l)}
+.res-method{
+  display:flex;align-items:baseline;gap:14px;
+  padding:14px 0;border-bottom:1px solid var(--rule-l);
+}
+.res-method-n{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--ink3);min-width:20px;
+}
+.res-method-t{font-size:14px;font-weight:500;color:var(--ink)}
+
+/* Survey stats — large numbers, no card backgrounds */
+.res-stats{border-top:1px solid var(--rule-l)}
+.res-stat{
+  display:grid;grid-template-columns:160px 1fr;
+  gap:20px;align-items:baseline;
+  padding:24px 0;border-bottom:1px solid var(--rule-l);
+}
+.rs-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(36px,4vw,58px);
+  font-weight:900;letter-spacing:-.03em;
+  color:var(--ink);line-height:1;
+}
+.rs-txt{font-size:15px;color:var(--ink2);line-height:1.6}
+.rs-txt strong{color:var(--ink);font-weight:600}
+
+
+/* ════════════════════════════════
+   §07  COMPETITIVE
+   ════════════════════════════════ */
+#competitive{background:var(--d1);padding:120px 0}
+
+/* Gap quote opens the section — large and confident */
+.comp-quote{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(24px,3vw,40px);
+  font-weight:700;color:#fff;line-height:1.3;
+  max-width:900px;font-style:italic;
+  padding:0 0 56px;
+  border-bottom:1px solid var(--rule-d);
+  margin-bottom:56px;
+}
+
+.comp-sub-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:36px;
+}
+.comp-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(30px,3.2vw,46px);
+  letter-spacing:-.025em;color:#fff;line-height:1.1;
+}
+.comp-body{font-size:16px;color:var(--mid);max-width:440px;line-height:1.65}
+
+/* Tools table */
+.tools{border-top:1px solid var(--rule-d);margin-top:48px}
+.tool{
+  display:grid;grid-template-columns:180px 1fr 130px;
+  gap:28px;align-items:center;
+  padding:20px 0;border-bottom:1px solid var(--rule-d);
+}
+.tool-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:15px;font-weight:700;color:#fff;
+}
+.tool-gap{font-size:13px;color:var(--mid);line-height:1.5}
+.tool-cat{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--lo);text-align:right;
+}
+
+
+/* ════════════════════════════════
+   §08  PERSONAS — split dark/light
+   ════════════════════════════════ */
+#personas{display:grid;grid-template-columns:1fr 1fr}
+
+.persona{padding:100px calc(var(--pad) / 1.2) 80px}
+.persona-dark{background:var(--black)}
+.persona-light{background:var(--paper);border-left:1px solid var(--rule-l)}
+
+.persona-id{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  margin-bottom:22px;
+}
+.persona-dark .persona-id{color:var(--lo)}
+.persona-light .persona-id{color:var(--ink3)}
+
+.persona-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(36px,4vw,56px);
+  font-weight:800;letter-spacing:-.035em;line-height:1;
+  margin-bottom:8px;
+}
+.persona-dark  .persona-name{color:#fff}
+.persona-light .persona-name{color:var(--ink)}
+
+.persona-role{font-size:15px;margin-bottom:4px}
+.persona-dark  .persona-role{color:var(--mid)}
+.persona-light .persona-role{color:var(--ink2)}
+
+.persona-co{font-size:13px}
+.persona-dark  .persona-co{color:var(--lo)}
+.persona-light .persona-co{color:var(--ink3)}
+
+.persona-divider{height:1px;margin:32px 0}
+.persona-dark  .persona-divider{background:var(--rule-d)}
+.persona-light .persona-divider{background:var(--rule-l)}
+
+.persona-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.pcol-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--a);margin-bottom:14px;
+}
+.persona-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.persona-list li{font-size:13px;line-height:1.55;display:flex;align-items:flex-start;gap:8px}
+.persona-dark  .persona-list li{color:var(--mid)}
+.persona-light .persona-list li{color:var(--ink2)}
+.persona-list li::before{content:'—';flex-shrink:0}
+.persona-dark  .persona-list li::before{color:var(--lo)}
+.persona-light .persona-list li::before{color:var(--ink3)}
+
+
+/* ════════════════════════════════
+   §09  TURNING POINT
+   ════════════════════════════════ */
+#turning{background:#fff;padding:120px 0}
+
+.turn-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(34px,3.8vw,52px);
+  letter-spacing:-.025em;color:var(--ink);line-height:1.1;
+  max-width:640px;margin-top:16px;margin-bottom:16px;
+}
+.turn-body{
+  font-size:16px;color:var(--ink2);line-height:1.75;
+  max-width:520px;margin-bottom:64px;
+}
+
+/* Central quote — thick rule, large, italic */
+.turn-quote{
+  border-top:3px solid var(--ink);
+  padding-top:44px;
+  padding-bottom:52px;
+  border-bottom:1px solid var(--rule-l);
+  margin-bottom:60px;
+}
+.turn-q{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(18px,2.2vw,28px);
+  font-weight:700;color:var(--ink);line-height:1.4;
+  max-width:860px;font-style:italic;
+}
+
+/* Three decisions — restrained, column layout */
+.decisions{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--rule-l)}
+.dec{padding:32px 32px 32px 0;border-right:1px solid var(--rule-l);margin-right:32px}
+.dec:last-child{border-right:none;margin-right:0;padding-right:0}
+.dec-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;
+}
+.dec-lbl.bad{color:#B03030}
+.dec-lbl.good{color:var(--a)}
+.dec-lbl.call{color:#4A7A40}
+.dec-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:17px;font-weight:700;color:var(--ink);margin-bottom:9px;line-height:1.25;
+}
+.dec-desc{font-size:13px;color:var(--ink2);line-height:1.65}
+
+
+/* ════════════════════════════════
+   §10  PILLARS — horizontal strips
+   ════════════════════════════════ */
+#solution{background:var(--d2);padding:120px 0}
+
+.sol-head{margin-bottom:72px}
+.sol-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(38px,4.5vw,64px);
+  letter-spacing:-.03em;color:#fff;line-height:1.05;
+  max-width:680px;margin-top:16px;margin-bottom:14px;
+}
+.sol-body{font-size:17px;color:var(--mid);max-width:520px;line-height:1.65}
+
+.pillars{border-top:1px solid var(--rule-d)}
+.pillar{
+  display:grid;grid-template-columns:92px 260px 1fr;
+  gap:48px;align-items:start;
+  padding:44px 0;border-bottom:1px solid var(--rule-d);
+}
+.pil-n{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:80px;font-weight:900;
+  color:rgba(255,255,255,.05);
+  line-height:1;letter-spacing:-.04em;
+}
+.pil-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:20px;font-weight:700;color:#fff;
+  line-height:1.25;padding-top:6px;
+}
+.pil-body{padding-top:6px}
+.pil-desc{font-size:14px;color:var(--mid);line-height:1.72;margin-bottom:18px}
+.pil-tags{display:flex;flex-wrap:wrap;gap:8px}
+.pil-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.06em;color:var(--lo);
+  padding:4px 12px;border:1px solid rgba(255,255,255,.09);border-radius:100px;
+}
+
+
+/* ════════════════════════════════
+   §11  PIPELINE
+   ════════════════════════════════ */
+#how{background:var(--off);padding:120px 0}
+
+.how-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(34px,3.8vw,52px);
+  letter-spacing:-.025em;color:var(--ink);line-height:1.1;
+  margin-top:16px;margin-bottom:14px;
+}
+.how-body{
+  font-size:16px;color:var(--ink2);line-height:1.7;max-width:520px;margin-bottom:64px;
+}
+
+.pipeline{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule-l)}
+.pipe{padding:38px 30px;border-right:1px solid var(--rule-l)}
+.pipe:last-child{border-right:none}
+.pipe-n{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.1em;color:var(--ink3);margin-bottom:16px;
+}
+.pipe-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-bottom:10px;
+}
+.pipe-desc{font-size:14px;color:var(--ink2);line-height:1.7}
+
+
+/* ════════════════════════════════
+   §12  INTERFACE
+   ════════════════════════════════ */
+#interface{
+  background:var(--black);padding:120px 0;
+  border-top:1px solid var(--rule-d);
+}
+.iface-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(34px,4vw,56px);
+  letter-spacing:-.03em;color:#fff;line-height:1.1;
+  max-width:620px;margin-top:16px;margin-bottom:72px;
+}
+
+/* Pivot — editorial quote, not a callout box */
+.pivot{
+  border-top:1px solid var(--rule-d);
+  border-bottom:1px solid var(--rule-d);
+  padding:40px 0 52px;margin-bottom:72px;
+}
+.pivot-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);
+  margin-bottom:16px;
+}
+.pivot-q{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(17px,1.8vw,22px);
+  font-weight:600;color:#fff;line-height:1.5;
+  max-width:860px;font-style:italic;
+}
+
+/* Three plugin steps */
+.plugin-steps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule-d)}
+.ps{padding:38px 36px 38px 0;border-right:1px solid var(--rule-d);margin-right:36px}
+.ps:last-child{border-right:none;margin-right:0;padding-right:0}
+.ps-n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--lo);margin-bottom:16px}
+.ps-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:10px}
+.ps-desc{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:22px}
+.ps-feats{display:flex;flex-direction:column;gap:7px;margin-bottom:28px}
+.ps-feat{font-size:13px;color:var(--mid);display:flex;align-items:flex-start;gap:8px}
+.ps-feat::before{content:'·';color:var(--a);flex-shrink:0}
+.ps .ph{height:300px}
+
+
+/* ════════════════════════════════
+   §13  ARCHITECTURE
+   ════════════════════════════════ */
+#architecture{background:var(--d1);padding:120px 0}
+
+.arch-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(34px,4vw,54px);
+  letter-spacing:-.03em;color:#fff;line-height:1.1;
+  max-width:720px;margin-top:16px;margin-bottom:12px;
+}
+.arch-sub{
+  font-size:17px;color:var(--mid);max-width:600px;line-height:1.65;margin-bottom:56px;
+}
+.arch .ph{height:500px}
+.arch-note{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--lo);text-align:center;
+  margin-top:14px;letter-spacing:.06em;
+}
+
+
+/* ════════════════════════════════
+   §14  TESTING
+   ════════════════════════════════ */
+#testing{background:#fff;padding:120px 0}
+
+.test-cols{display:grid;grid-template-columns:1fr 1fr;gap:88px}
+.test-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(32px,3.6vw,50px);
+  letter-spacing:-.025em;color:var(--ink);line-height:1.1;
+  margin-top:16px;margin-bottom:14px;
+}
+.test-body{font-size:16px;color:var(--ink2);line-height:1.75;margin-bottom:48px}
+
+.findings{border-top:1px solid var(--rule-l)}
+.finding{padding:26px 0;border-bottom:1px solid var(--rule-l)}
+.finding-n{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);
+  margin-bottom:10px;
+}
+.finding-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:17px;font-weight:700;color:var(--ink);margin-bottom:7px;
+}
+.finding-desc{font-size:14px;color:var(--ink2);line-height:1.65}
+.test-img .ph-l{height:440px}
+
+
+/* ════════════════════════════════
+   §15  ROADMAP
+   ════════════════════════════════ */
+#roadmap{background:var(--d2);padding:120px 0}
+
+.road-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(34px,3.8vw,54px);
+  letter-spacing:-.03em;color:#fff;line-height:1.05;
+  margin-top:16px;margin-bottom:72px;
+}
+.phases{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule-d)}
+.phase{padding:44px 44px 44px 0;border-right:1px solid var(--rule-d);margin-right:44px}
+.phase:last-child{border-right:none;margin-right:0;padding-right:0}
+.phase-ghost{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:88px;font-weight:900;
+  color:rgba(255,255,255,.04);line-height:1;letter-spacing:-.04em;
+  margin-bottom:-4px;
+}
+.phase-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--lo);margin-bottom:14px;
+}
+.phase-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:22px;font-weight:700;color:#fff;margin-bottom:20px;
+}
+.phase-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
+.phase-list li{font-size:14px;color:var(--mid);line-height:1.55;display:flex;align-items:flex-start;gap:9px}
+.phase-list li::before{content:'—';color:var(--lo);flex-shrink:0}
+.phase-out{font-size:13px;color:var(--lo);line-height:1.55;font-style:italic}
+
+
+/* ════════════════════════════════
+   §16  REFLECTION
+   ════════════════════════════════ */
+#reflection{background:var(--off);padding:120px 0}
+
+.ref-cols{display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:start}
+.ref-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:800;font-size:clamp(32px,3.6vw,50px);
+  letter-spacing:-.025em;color:var(--ink);line-height:1.1;
+  margin-top:16px;margin-bottom:14px;
+}
+.ref-body{font-size:16px;color:var(--ink2);line-height:1.75;margin-bottom:44px}
+
+.learns{border-top:1px solid var(--rule-l)}
+.learn{padding:26px 0;border-bottom:1px solid var(--rule-l)}
+.learn-n{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;
+}
+.learn-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:17px;font-weight:700;color:var(--ink);margin-bottom:7px;
+}
+.learn-desc{font-size:14px;color:var(--ink2);line-height:1.65}
+
+.redo{background:#fff;border-radius:4px;padding:44px}
+.redo-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#7C3AED;margin-bottom:16px;
+}
+.redo-body{font-size:15px;color:var(--ink2);line-height:1.75;font-style:italic}
+
+
+/* ════════════════════════════════
+   §17  CLOSING — statement at full scale
+   ════════════════════════════════ */
+#closing{
+  background:var(--black);
+  min-height:75vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding-bottom:100px;
+  border-top:1px solid var(--rule-d);
+}
+.close-h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:900;
+  font-size:clamp(52px,8vw,120px);
+  letter-spacing:-.045em;color:#fff;
+  line-height:.93;
+  margin-bottom:60px;
+  max-width:1000px;
+}
+.close-rule{height:1px;background:var(--rule-d);margin-bottom:32px}
+.close-foot{display:flex;align-items:flex-end;justify-content:space-between}
+.close-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:18px;font-weight:700;color:#fff;
+}
+.close-prog{font-size:14px;color:var(--mid);margin-top:5px}
+.close-contact{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.08em;color:var(--lo);
+}
+</style>
+</head>
+<body>
+
+<div id="pb"></div>
+
+
+<!-- §01 HERO ─────────────────────────── -->
+<section id="hero">
+  <nav class="hero-bar">
+    <span class="hero-bar-name">Ruttvik Aron</span>
+    <span class="hero-bar-meta">Final Year Project · 2024</span>
+  </nav>
+  <div class="hero-content">
+    <div class="hero-kicker">
+      <span class="hero-kicker-line"></span>
+      <span class="hero-kicker-text">PG Certificate, Visual Design &amp; UX · IIT Hyderabad</span>
+    </div>
+    <h1 class="hero-h1">
+      <span class="hero-h1-plain">Design System</span>
+      <span class="hero-h1-grad">Intelligence Engine</span>
+    </h1>
+    <div class="hero-rule"></div>
+    <div class="hero-meta">
+      <div class="hm-item"><span class="hm-label">Role</span><span class="hm-val">Product Designer<br>Researcher</span></div>
+      <div class="hm-item"><span class="hm-label">Duration</span><span class="hm-val">3–4 Months<br>Solo Project</span></div>
+      <div class="hm-item"><span class="hm-label">Domain</span><span class="hm-val">Design Systems<br>AI Tooling</span></div>
+      <div class="hm-item"><span class="hm-label">Deliverable</span><span class="hm-val">Figma Plugin<br>Governance Engine</span></div>
+    </div>
+  </div>
+  <div class="hero-vis w">
+    <div class="ph" style="height:480px">📌 Hero visual — Plugin modal or dashboard overview</div>
+  </div>
+</section>
+
+
+<!-- §02 CONTEXT ──────────────────────── -->
+<section id="context">
+  <div class="ctx">
+    <div class="ctx-cell"><label>Program</label><span>PG Certificate — Visual Design &amp; UX</span></div>
+    <div class="ctx-cell"><label>Institution</label><span>IIT Hyderabad</span></div>
+    <div class="ctx-cell"><label>Project Type</label><span>Solo Final Year Project</span></div>
+    <div class="ctx-cell"><label>Focus Areas</label><span>Design Systems · AI Tooling · Governance</span></div>
+    <div class="ctx-cell"><label>Status</label><span>Presented &amp; Validated</span></div>
+  </div>
+</section>
+
+
+<!-- §03 HOOK — statement only ────────── -->
+<section id="hook">
+  <div class="w">
+    <h2 class="hook-h2">
+      Design systems are built to scale.<br>
+      <em>Most don't survive the journey.</em>
+    </h2>
+  </div>
+</section>
+
+
+<!-- §04 PROBLEM ──────────────────────── -->
+<section id="problem">
+  <div class="w">
+    <div class="prob-head">
+      <span class="prob-eye">The Invisible Problem</span>
+      <h2 class="prob-h2">Design drift is not a bug.<br>It's a lifecycle.</h2>
+      <p class="prob-sub">A slow, compounding breakdown that gets worse every time a team ships without looking back.</p>
+    </div>
+
+    <div class="lifecycle">
+      <p class="lc-label">The compounding cycle — it never naturally stops</p>
+      <div class="lc-flow">
+        <span class="lc-node hi">Design System Created</span>
+        <span class="lc-sep">→</span>
+        <span class="lc-node">Features Ship</span>
+        <span class="lc-sep">→</span>
+        <span class="lc-node dim">Local Overrides</span>
+        <span class="lc-sep">→</span>
+        <span class="lc-node hi">Detached Components</span>
+        <span class="lc-sep">→</span>
+        <span class="lc-node dim">Design–Dev Mismatch</span>
+        <span class="lc-sep">→</span>
+        <span class="lc-node">Manual Fixes</span>
+        <span class="lc-sep">→</span>
+        <span class="lc-node hi">System Authority Weakens</span>
+        <span class="lc-sep">↺</span>
+      </div>
+    </div>
+
+    <div class="failures">
+      <div class="fm">
+        <span class="fm-bg">01</span>
+        <div class="fm-title">Detached Components</div>
+        <p class="fm-desc">Components break away from the source library. Changes stop propagating — every edit becomes a manual patch.</p>
+      </div>
+      <div class="fm">
+        <span class="fm-bg">02</span>
+        <div class="fm-title">Token Overrides</div>
+        <p class="fm-desc">Design tokens get hardcoded. Visual consistency breaks silently — one screen at a time.</p>
+      </div>
+      <div class="fm">
+        <span class="fm-bg">03</span>
+        <div class="fm-title">Naming Divergence</div>
+        <p class="fm-desc">Inconsistent naming patterns break handoff, fail automation, and make the system a maze.</p>
+      </div>
+      <div class="fm">
+        <span class="fm-bg">04</span>
+        <div class="fm-title">Design–Dev Misalignment</div>
+        <p class="fm-desc">What ships is no longer what was designed. The gap grows invisibly. Debt compounds quietly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §05 STATS — 100% dominates ───────── -->
+<section id="cost">
+  <div class="w">
+    <span class="cost-eye">Operational Impact</span>
+    <p class="cost-intro">The numbers that made it impossible to look away.</p>
+
+    <div class="hero-stat">
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-desc">
+        <p>said manual design system checks don't scale.</p>
+        <small>Every single respondent. Same answer. No exceptions.</small>
+      </div>
+    </div>
+
+    <div class="sub-stats">
+      <div class="sub-stat">
+        <div class="sub-num">15–25%</div>
+        <p class="sub-lbl">of design time lost to inconsistency-related rework</p>
+      </div>
+      <div class="sub-stat">
+        <div class="sub-num">20–30%</div>
+        <p class="sub-lbl">of UI bugs traced back to design–development mismatch</p>
+      </div>
+      <div class="sub-stat">
+        <div class="sub-num">30–40%</div>
+        <p class="sub-lbl">longer onboarding in projects with significant system drift</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §06 RESEARCH ─────────────────────── -->
+<section id="research">
+  <div class="w">
+    <div class="res-top">
+      <span class="res-eye">Discovery &amp; Research</span>
+      <h2 class="res-h2">Talking to the people<br>living inside the problem</h2>
+    </div>
+    <div class="res-cols">
+      <div>
+        <p class="res-body">Primary survey with Product Designers, UI/UX Designers, PMs, and Developers — combined with secondary research, deep competitive analysis of 7 adjacent tools, and usability testing with working professionals.</p>
+        <p class="res-methods-lbl">Methods</p>
+        <div class="res-methods">
+          <div class="res-method"><span class="res-method-n">01</span><span class="res-method-t">Primary Survey — Designers, PMs, Developers</span></div>
+          <div class="res-method"><span class="res-method-n">02</span><span class="res-method-t">Secondary Research — Industry reports, community data</span></div>
+          <div class="res-method"><span class="res-method-n">03</span><span class="res-method-t">Deep Competitive Analysis — 7 adjacent tools audited</span></div>
+          <div class="res-method"><span class="res-method-n">04</span><span class="res-method-t">Usability Testing — Prototype sessions with professionals</span></div>
+        </div>
+      </div>
+      <div class="res-stats">
+        <div class="res-stat">
+          <div class="rs-num">67%</div>
+          <p class="rs-txt"><strong>rated design drift as a major issue</strong> — yet none had a systematic way to detect it.</p>
+        </div>
+        <div class="res-stat">
+          <div class="rs-num">100%</div>
+          <p class="rs-txt"><strong>said manual checks don't scale.</strong> Every single respondent. Same answer.</p>
+        </div>
+        <div class="res-stat">
+          <div class="rs-num">88.9%</div>
+          <p class="rs-txt"><strong>said drift causes more than 10% developer rework</strong> — a cost nobody was tracking.</p>
+        </div>
+        <div class="res-stat">
+          <div class="rs-num">44.4%</div>
+          <p class="rs-txt"><strong>spend 11–25% of dev time on rework.</strong> Another 44.4% spend 26–50%+.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §07 COMPETITIVE ──────────────────── -->
+<section id="competitive">
+  <div class="w">
+    <!-- Gap quote opens the section — this is the point, table proves it -->
+    <p class="comp-quote">"No tool gives teams a unified, Figma-native view of design system health across components, tokens, naming, and drift — simultaneously."</p>
+
+    <div class="comp-sub-head">
+      <h2 class="comp-h2">Seven tools in the space.<br>One gap none of them fill.</h2>
+      <p class="comp-body">Every existing solution solves a piece. None gives teams the full picture.</p>
+    </div>
+
+    <div class="tools">
+      <div class="tool"><div class="tool-name">ComponentQA</div><div class="tool-gap">Component-level checks only. No cross-file governance or unified health scoring.</div><div class="tool-cat">Component Audit</div></div>
+      <div class="tool"><div class="tool-name">Design Lint</div><div class="tool-gap">Style inconsistency checks inside Figma. Single-file, no system-wide view.</div><div class="tool-cat">Linting</div></div>
+      <div class="tool"><div class="tool-name">Tokens Studio</div><div class="tool-gap">Token management and syncing. No drift detection or compliance reporting.</div><div class="tool-cat">Token Mgmt</div></div>
+      <div class="tool"><div class="tool-name">Supernova</div><div class="tool-gap">Strong on documentation and design-to-code. Weak on system compliance.</div><div class="tool-cat">Documentation</div></div>
+      <div class="tool"><div class="tool-name">Zeroheight</div><div class="tool-gap">Design system documentation hub. No active analysis or scoring layer.</div><div class="tool-cat">Documentation</div></div>
+      <div class="tool"><div class="tool-name">UX Expert</div><div class="tool-gap">Broad UX auditing. Covers general issues, not design-system governance specifically.</div><div class="tool-cat">Auditing</div></div>
+      <div class="tool"><div class="tool-name">Validator</div><div class="tool-gap">Single-pillar component validation. No cross-system coverage or drift score.</div><div class="tool-cat">Validation</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §08 PERSONAS — split dark/light ──── -->
+<section id="personas">
+  <div class="persona persona-dark">
+    <div class="persona-id">Persona 01</div>
+    <div class="persona-name">Aditi Sharma</div>
+    <div class="persona-role">Product Designer, 27</div>
+    <div class="persona-co">SaaS Startup · 40 employees</div>
+    <div class="persona-divider"></div>
+    <div class="persona-cols">
+      <div>
+        <div class="pcol-label">Pain Points</div>
+        <ul class="persona-list">
+          <li>Manual drift audits drain hours every sprint</li>
+          <li>Detached components break system propagation</li>
+          <li>Token overrides discovered late in review</li>
+          <li>Hard to prove system health to PMs</li>
+        </ul>
+      </div>
+      <div>
+        <div class="pcol-label">Needs</div>
+        <ul class="persona-list">
+          <li>Automated validation without leaving Figma</li>
+          <li>Early detection of inconsistencies</li>
+          <li>A clear, shareable system health score</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="persona persona-light">
+    <div class="persona-id">Persona 02</div>
+    <div class="persona-name">Rahul Verma</div>
+    <div class="persona-role">Design System Lead, 34</div>
+    <div class="persona-co">Large Fintech Organisation</div>
+    <div class="persona-divider"></div>
+    <div class="persona-cols">
+      <div>
+        <div class="pcol-label">Pain Points</div>
+        <ul class="persona-list">
+          <li>Manual reviews across dozens of files</li>
+          <li>No visibility into team-level drift</li>
+          <li>Drift invisible until it causes a production bug</li>
+          <li>Hard to enforce governance at scale</li>
+        </ul>
+      </div>
+      <div>
+        <div class="pcol-label">Needs</div>
+        <ul class="persona-list">
+          <li>Automated governance insights</li>
+          <li>Quantified system health score</li>
+          <li>Drift reports shareable with engineering</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §09 TURNING POINT ────────────────── -->
+<section id="turning">
+  <div class="w">
+    <span class="prob-eye">The Key Decision</span>
+    <h2 class="turn-h2">Naming the problem wasn't enough. It had to be measurable.</h2>
+    <p class="turn-body">Every designer I spoke to could name the symptoms. But naming a problem and defining it precisely enough that a system can score it are very different things. That gap is where this project was born.</p>
+
+    <div class="turn-quote">
+      <p class="turn-q">"The hardest part wasn't identifying what was wrong — it was defining the problem precisely enough that a system could score it. The shift from observation to measurable definition is where the four pillars were born."</p>
+    </div>
+
+    <div class="decisions">
+      <div class="dec">
+        <div class="dec-lbl bad">Easy Answer</div>
+        <div class="dec-title">"Detect when components are wrong"</div>
+        <p class="dec-desc">Vague, unmeasurable. An AI can't score what it can't define. Would have produced a tool with no real output.</p>
+      </div>
+      <div class="dec">
+        <div class="dec-lbl good">Right Answer</div>
+        <div class="dec-title">Define specific, scoreable dimensions</div>
+        <p class="dec-desc">Each pillar became a precise detection target — not a category, but a measurable compliance state. Specificity makes scoring possible.</p>
+      </div>
+      <div class="dec">
+        <div class="dec-lbl call">Hardest Call</div>
+        <div class="dec-title">v1 is analysis only — no auto-fix</div>
+        <p class="dec-desc">Professionals confirmed it: trust in the analysis must come before automation can be introduced.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §10 PILLARS ──────────────────────── -->
+<section id="solution">
+  <div class="w">
+    <div class="sol-head">
+      <span class="prob-eye" style="color:rgba(255,255,255,.28)">The Solution</span>
+      <h2 class="sol-h2">Four pillars. One score.<br>Built inside Figma.</h2>
+      <p class="sol-body">A Figma Plugin that detects, measures, and reports on design system health through four precisely defined pillars of compliance.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pil-n">01</div>
+        <div class="pil-name">Component Integrity</div>
+        <div class="pil-body">
+          <p class="pil-desc">Detects detached instances, unlinked components, and structural overrides across the entire Figma file. Ranked #1 priority by professionals during usability testing — the most urgent, highest-frequency pain point in practice.</p>
+          <div class="pil-tags"><span class="pil-tag">Detached Instances</span><span class="pil-tag">Unlinked Components</span><span class="pil-tag">Structural Overrides</span></div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pil-n">02</div>
+        <div class="pil-name">Token Compliance</div>
+        <div class="pil-body">
+          <p class="pil-desc">Flags misused, missing, or hardcoded design tokens across color, spacing, and typography. Surfaces every place where raw values have replaced semantic tokens.</p>
+          <div class="pil-tags"><span class="pil-tag">Color Tokens</span><span class="pil-tag">Spacing Violations</span><span class="pil-tag">Typography Tokens</span><span class="pil-tag">Hardcoded Styles</span></div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pil-n">03</div>
+        <div class="pil-name">Naming Governance</div>
+        <div class="pil-body">
+          <p class="pil-desc">Detects violations of architecture-based naming conventions. Critical for handoff quality, automation reliability, and team consistency — naming divergence is invisible until it breaks the pipeline.</p>
+          <div class="pil-tags"><span class="pil-tag">Naming Violations</span><span class="pil-tag">Handoff Quality</span><span class="pil-tag">Automation Reliability</span></div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pil-n">04</div>
+        <div class="pil-name">System Drift Score</div>
+        <div class="pil-body">
+          <p class="pil-desc">A single quantified health score aggregating all three pillars. Outputs a compliance percentage, severity ranking, and file health overview — the number that makes invisible drift visible to engineers, PMs, and stakeholders.</p>
+          <div class="pil-tags"><span class="pil-tag">Compliance %</span><span class="pil-tag">Severity Ranking</span><span class="pil-tag">File Health Overview</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §11 PIPELINE ─────────────────────── -->
+<section id="how">
+  <div class="w">
+    <span class="res-eye">The Pipeline</span>
+    <h2 class="how-h2">Four steps. Figma as the data source.</h2>
+    <p class="how-body">The plugin reads the active file directly through the Figma Plugin API — no imports, no external uploads. Analysis happens inside Figma, on the file being designed.</p>
+    <div class="pipeline">
+      <div class="pipe"><div class="pipe-n">STEP 01</div><div class="pipe-title">Ingest</div><p class="pipe-desc">Connect to the Figma file and linked design system. Establish the source of truth — what the system is supposed to look like.</p></div>
+      <div class="pipe"><div class="pipe-n">STEP 02</div><div class="pipe-title">Scan</div><p class="pipe-desc">Traverse the full component tree, token usage, and naming patterns across every layer. Nothing sampled — everything checked.</p></div>
+      <div class="pipe"><div class="pipe-n">STEP 03</div><div class="pipe-title">Detect</div><p class="pipe-desc">Flag issues across all four pillars. Rank by severity and estimated impact. Surface what needs attention first.</p></div>
+      <div class="pipe"><div class="pipe-n">STEP 04</div><div class="pipe-title">Report</div><p class="pipe-desc">Output a full drift report with ranked issues, compliance scores, and a system health overview — analysis only, no automated changes.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §12 INTERFACE ────────────────────── -->
+<section id="interface">
+  <div class="w">
+    <span class="prob-eye" style="color:rgba(255,255,255,.28)">The Interface</span>
+    <h2 class="iface-h2">The product lives where<br>the problem lives — inside Figma.</h2>
+
+    <div class="pivot">
+      <div class="pivot-lbl">Product Pivot</div>
+      <p class="pivot-q">"Building the standalone prototype taught me something. Asking designers to leave Figma to audit a Figma file is its own UX failure — the same kind of friction the tool was built to eliminate."</p>
+    </div>
+
+    <div class="plugin-steps">
+      <div class="ps">
+        <div class="ps-n">STEP 01</div>
+        <div class="ps-title">Trigger</div>
+        <p class="ps-desc">Designer opens the plugin from Figma's plugin menu. Modal opens over the active canvas — no tab switching, no context loss.</p>
+        <div class="ps-feats">
+          <span class="ps-feat">Accessible from any Figma file</span>
+          <span class="ps-feat">Single "Run Analysis" CTA</span>
+          <span class="ps-feat">No login, no file import required</span>
+        </div>
+        <div class="ph" style="height:300px">📌 Plugin trigger screen</div>
+      </div>
+      <div class="ps">
+        <div class="ps-n">STEP 02</div>
+        <div class="ps-title">AI Scan</div>
+        <p class="ps-desc">Four AI agents run in parallel across the four pillars — each scanning a different dimension of system compliance simultaneously.</p>
+        <div class="ps-feats">
+          <span class="ps-feat">Agents scan simultaneously</span>
+          <span class="ps-feat">Reads live file via Plugin API</span>
+          <span class="ps-feat">Progress feedback during scan</span>
+        </div>
+        <div class="ph" style="height:300px">📌 AI scan in progress</div>
+      </div>
+      <div class="ps">
+        <div class="ps-n">STEP 03</div>
+        <div class="ps-title">Results</div>
+        <p class="ps-desc">Results modal opens with every drift issue found, organised by the four pillars. Fix and re-scan without ever leaving the canvas.</p>
+        <div class="ps-feats">
+          <span class="ps-feat">Issues ranked by severity</span>
+          <span class="ps-feat">Organised by pillar</span>
+          <span class="ps-feat">System Drift Score at top</span>
+        </div>
+        <div class="ph" style="height:300px">📌 Results modal with issues by pillar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §13 ARCHITECTURE ─────────────────── -->
+<section id="architecture">
+  <div class="w">
+    <span class="prob-eye" style="color:rgba(255,255,255,.28)">Agentic Architecture</span>
+    <h2 class="arch-h2">One orchestrator.<br>Four specialist agents.</h2>
+    <p class="arch-sub">A multi-agent pipeline built around RAG architecture — one main agent routes context to four sub-agents, each responsible for a single pillar. Results feed into the unified drift score.</p>
+    <div class="arch">
+      <div class="ph" style="height:500px">📌 Architecture diagram — Orchestrator → RAG → 4 Sub-Agents (one per pillar)</div>
+    </div>
+    <p class="arch-note">Architecture session in progress — diagram pending</p>
+  </div>
+</section>
+
+
+<!-- §14 TESTING ──────────────────────── -->
+<section id="testing">
+  <div class="w">
+    <span class="prob-eye">Usability Testing</span>
+    <div class="test-cols">
+      <div>
+        <h2 class="test-h2">Testing didn't validate the design. It changed it.</h2>
+        <p class="test-body">Prototype sessions with working professionals revealed something important: feature prioritisation that made sense on paper didn't match what caused the most pain in practice.</p>
+        <div class="findings">
+          <div class="finding">
+            <div class="finding-n">Finding 01</div>
+            <div class="finding-title">Component Integrity moved to #1</div>
+            <p class="finding-desc">Professionals flagged detached components as their most urgent pain — above token violations and naming issues. The pillar hierarchy shifted to reflect this.</p>
+          </div>
+          <div class="finding">
+            <div class="finding-n">Finding 02</div>
+            <div class="finding-title">Report structure re-sequenced</div>
+            <p class="finding-desc">What users see first changed — from what seemed logical on paper to what actually causes the most pain. Context, not assumption, drove the final sequence.</p>
+          </div>
+          <div class="finding">
+            <div class="finding-n">Finding 03</div>
+            <div class="finding-title">"Analysis only" approach confirmed</div>
+            <p class="finding-desc">Every professional validated the v1 decision to report rather than auto-fix. Trust in the analysis must come before automation.</p>
+          </div>
+        </div>
+      </div>
+      <div class="test-img">
+        <div class="ph-l" style="height:440px">📌 Prototype iterations or usability testing screenshots</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §15 ROADMAP ──────────────────────── -->
+<section id="roadmap">
+  <div class="w">
+    <span class="prob-eye" style="color:rgba(255,255,255,.28)">What Comes Next</span>
+    <h2 class="road-h2">Three phases.<br>Each building on the last.</h2>
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-ghost">01</div>
+        <div class="phase-badge">Now — Foundation</div>
+        <div class="phase-title">Drift Detection</div>
+        <ul class="phase-list">
+          <li>Component integrity scanning</li>
+          <li>Token validation and compliance</li>
+          <li>Naming convention enforcement</li>
+          <li>System Drift Score (unified)</li>
+        </ul>
+        <p class="phase-out">Baseline compliance visibility — teams see exactly where and how their system is breaking down.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-ghost">02</div>
+        <div class="phase-badge">Next — Automation</div>
+        <div class="phase-title">Guided Remediation</div>
+        <ul class="phase-list">
+          <li>Auto-fix suggestions per issue</li>
+          <li>Token replacement workflows</li>
+          <li>Governance PR automation</li>
+          <li>One-click component re-linking</li>
+        </ul>
+        <p class="phase-out">Reduced manual remediation — once drift is understood and trusted, fixing it gets automated.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-ghost">03</div>
+        <div class="phase-badge">Future — Intelligence</div>
+        <div class="phase-title">Continuous Governance</div>
+        <ul class="phase-list">
+          <li>Real-time drift dashboards</li>
+          <li>Regression alerts on system changes</li>
+          <li>Team-level health reporting</li>
+          <li>Historical drift trend analysis</li>
+        </ul>
+        <p class="phase-out">Proactive design governance — teams know before a problem becomes a bug.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §16 REFLECTION ───────────────────── -->
+<section id="reflection">
+  <div class="w">
+    <span class="res-eye">What I Learned</span>
+    <div class="ref-cols">
+      <div>
+        <h2 class="ref-h2">What changed me,<br>not just the work.</h2>
+        <p class="ref-body">Three months of working on a problem that's invisible until it becomes expensive. What I'm taking forward isn't just a portfolio piece — it's a shift in how I think about the relationship between design systems and the teams that depend on them.</p>
+        <div class="learns">
+          <div class="learn">
+            <div class="learn-n">Learning 01</div>
+            <div class="learn-title">Definition is design work</div>
+            <p class="learn-desc">The hardest decision wasn't the interface — it was defining "drift" precisely enough that a system could measure it. Measurability is not a technical problem. It's a design problem.</p>
+          </div>
+          <div class="learn">
+            <div class="learn-n">Learning 02</div>
+            <div class="learn-title">Constraints are part of the solution</div>
+            <p class="learn-desc">"Analysis only" in v1 felt like a limitation. It turned out to be strategic — and users confirmed it. Knowing when not to build something is as important as knowing what to build.</p>
+          </div>
+          <div class="learn">
+            <div class="learn-n">Learning 03</div>
+            <div class="learn-title">Where the product lives changes everything</div>
+            <p class="learn-desc">Building the standalone app first wasn't a mistake — it was necessary to see the problem clearly. The pivot to a plugin was the product finding its right home.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="redo">
+          <div class="redo-lbl">If I could go back</div>
+          <p class="redo-body">[ Ruttvik's personal reflection on what he'd do differently — scope, research depth, or decisions he'd revisit. To be written in his own voice. ]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- §17 CLOSING ──────────────────────── -->
+<section id="closing">
+  <div class="w" style="display:flex;flex-direction:column;justify-content:flex-end;height:100%">
+    <h2 class="close-h2">Systems that can't see themselves can't stay healthy.</h2>
+    <div class="close-rule"></div>
+    <div class="close-foot">
+      <div>
+        <div class="close-name">Ruttvik Aron</div>
+        <div class="close-prog">PG Certificate, Visual Design &amp; UX · IIT Hyderabad · 2024</div>
+      </div>
+      <div class="close-contact">oicspicanon@gmail.com</div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+const pb = document.getElementById('pb');
+document.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  pb.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+}, { passive: true });
+</script>
+</body>
+</html>
