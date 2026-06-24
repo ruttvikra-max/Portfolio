@@ -78,7 +78,7 @@ export default function Problem() {
                 delay={i * 70}
                 className="border-t border-white/12 pt-6 lg:pr-6"
               >
-                <div className="font-display text-[clamp(40px,5vw,60px)] font-normal leading-none text-accent-primary">
+                <div className="whitespace-nowrap font-display text-[clamp(40px,5vw,60px)] font-normal leading-none text-accent-primary">
                   {it.stat}
                 </div>
                 <div className="kicker mt-4 text-pearl/80">{it.tag}</div>
