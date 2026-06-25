@@ -64,6 +64,11 @@ python -m http.server 8000   # or: npx serve .
 - **Tier 1 — motion** · scroll reveals, avatar companion, mobile hero video loop.
 - **Tier 2 — interactive 3D** · React Three Fiber coffee machine (desktop), click-to-brew.
 
+Tier-2 effects (ReactBits: TextType, SplashCursor, MagicBento/Masonry) and the button
+micro-interaction spec are staged in [`tier2-effects/`](tier2-effects/README.md) — exact
+install commands, deps, and config, ready to pull via the `shadcn` MCP once React lands.
+Not wired into the static site.
+
 ### Migrating to Next.js (when we add Tier 1/2)
 The tokens and fonts port 1:1. `tokens.css` → import in `app/globals.css` (or map to a
 Tailwind theme). Each `<section>` in `index.html` becomes a React component; the page is

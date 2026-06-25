@@ -1,0 +1,6 @@
+{
+  "_comment": "Merge this 'registries' block into the Tier-2 app's components.json to enable @reactbits shorthand, e.g.  npx shadcn@latest add @reactbits/TextType-JS-CSS",
+  "registries": {
+    "@reactbits": "https://reactbits.dev/r/{name}"
+  }
+}
