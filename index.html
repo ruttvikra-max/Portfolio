@@ -31,15 +31,18 @@
   <main>
     <!-- HERO -->
     <section class="hero shell" aria-labelledby="hero-title">
-      <div class="hero__grid">
-        <div>
-          <p class="eyebrow">Product designer · slow pour</p>
-          <h1 id="hero-title">First, <span class="warm">coffee.</span></h1>
-          <p class="lead">I design products the way good coffee gets made — with craft, intention, and patience. Systems, interfaces, and the small details in between.</p>
-          <div class="hero__cta">
-            <a class="btn-primary" href="#work">See the work</a>
-            <a class="link-arrow" href="#footer">Or just say hi →</a>
-          </div>
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <h1 id="hero-title" class="hero-statement">
+            Hey! I'm <span class="hl hl--name"><span class="arw" aria-hidden="true">&rarr;</span>Ruttvik</span>. Design is my
+            <span class="hl hl--ikigai"><span class="arw" aria-hidden="true">&rarr;</span>Ikigai</span> &mdash; I craft
+            <a class="hl hl--make" href="#work"><span class="arw" aria-hidden="true">&rarr;</span>products</a>,
+            <a class="hl hl--make" href="#work"><span class="arw" aria-hidden="true">&rarr;</span>systems</a> &amp;
+            <a class="hl hl--make" href="#work"><span class="arw" aria-hidden="true">&rarr;</span>brands</a>
+            the way good coffee's made: slow, intentional, worth the wait. Got something in mind?
+            <a class="hl hl--cta" href="#footer"><span class="arw" aria-hidden="true">&rarr;</span>Get in touch</a>
+          </h1>
+
           <div class="brew-row" aria-label="House brews">
             <span class="brew-chip">Espresso</span>
             <span class="brew-chip">Cappuccino</span>
@@ -47,13 +50,15 @@
           </div>
         </div>
 
-        <!-- Tier-0 placeholder for the interactive machine/poster -->
-        <div class="stage" role="img" aria-label="A freshly poured cup of coffee, steaming.">
-          <span class="stage__tag">hero · static placeholder</span>
-          <div class="mug">
-            <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
-            <div class="mug__body"><div class="mug__coffee"></div></div>
-            <div class="mug__handle"></div>
+        <!-- Tier-0 placeholder for the interactive machine/avatar -->
+        <div class="hero__stage-wrap">
+          <div class="stage" role="img" aria-label="A freshly poured cup of coffee, steaming.">
+            <span class="stage__tag">hero · static placeholder</span>
+            <div class="mug">
+              <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
+              <div class="mug__body"><div class="mug__coffee"></div></div>
+              <div class="mug__handle"></div>
+            </div>
           </div>
         </div>
       </div>
