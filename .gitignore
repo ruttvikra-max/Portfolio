@@ -1,0 +1,17 @@
+# dependencies (added at Tier 1)
+node_modules/
+.next/
+dist/
+build/
+
+# env / local
+.env*
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+
+# keep source font zips out of the repo (extracted into /fonts)
+Typography/*.zip

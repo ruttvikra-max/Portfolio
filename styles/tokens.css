@@ -1,0 +1,82 @@
+/* =============================================================
+   SLOW POUR — DESIGN TOKENS
+   Two layers: PRIMITIVES (raw brand values) → SEMANTIC (roles).
+   Components consume semantic tokens only. Re-theme by editing
+   the primitives block — nothing else needs to change.
+   ============================================================= */
+
+:root {
+  /* ---------- PRIMITIVES ---------- */
+  --coffee-crema:  #F5ECD2;  /* canvas        */
+  --coffee-kraft:  #C7AD9E;  /* texture       */
+  --coffee-steam:  #8082A6;  /* cool neutral  */
+  --coffee-roast:  #29303D;  /* ink / dark    */
+  --heat-300:      #F2C230;  /* warm          */
+  --heat-500:      #F2921D;  /* mid           */
+  --heat-700:      #F24F13;  /* hot           */
+
+  /* ---------- SEMANTIC: SURFACES ---------- */
+  --surface-canvas:   var(--coffee-crema);
+  --surface-raised:   #FBF6E8;                       /* cards on cream */
+  --surface-texture:  var(--coffee-kraft);           /* bookshelf, sleeves */
+  --surface-inverse:  var(--coffee-roast);           /* work, footer */
+
+  /* ---------- SEMANTIC: TEXT ---------- */
+  --text-primary:     var(--coffee-roast);
+  /* secondary is darkened steam so it stays readable on cream (AA) */
+  --text-secondary:   color-mix(in srgb, var(--coffee-steam), var(--coffee-roast) 48%);
+  --text-on-inverse:  var(--coffee-crema);
+  --text-muted-inv:   color-mix(in srgb, var(--coffee-crema), var(--coffee-roast) 45%);
+
+  /* ---------- SEMANTIC: LINES & ACCENT ---------- */
+  --border-subtle:    color-mix(in srgb, var(--coffee-steam) 35%, transparent);
+  --border-inverse:   color-mix(in srgb, var(--coffee-crema) 18%, transparent);
+  --grid-line:        color-mix(in srgb, var(--coffee-steam) 14%, transparent);
+  --accent:           var(--heat-500);                       /* solid CTA/active */
+  --accent-strong:    var(--heat-700);
+  --accent-gradient:  linear-gradient(180deg, var(--heat-300), var(--heat-700)); /* liquid / brew only */
+  --focus-ring:       var(--heat-700);
+
+  /* ---------- TYPE ---------- */
+  --font-display: "Rondured", "Trebuchet MS", system-ui, sans-serif;
+  --font-body:    "Roboto", system-ui, -apple-system, sans-serif;
+
+  --step-display: clamp(2.75rem, 7vw, 5.5rem);
+  --step-h1:      clamp(2rem, 4.5vw, 3.25rem);
+  --step-h2:      clamp(1.5rem, 3vw, 2.125rem);
+  --step-lead:    clamp(1.0625rem, 1.6vw, 1.375rem);
+  --step-body:    1.0625rem;
+  --step-caption: 0.8125rem;
+
+  --leading-tight: 1.08;
+  --leading-body:  1.6;
+  --tracking-tight: -0.01em;
+  --tracking-eyebrow: 0.16em;
+
+  /* ---------- SPACE (8pt) ---------- */
+  --space-1: 8px;  --space-2: 16px; --space-3: 24px;
+  --space-4: 40px; --space-5: 64px; --space-6: 96px; --space-7: 144px;
+
+  /* ---------- RADIUS ---------- */
+  --radius-sm: 8px; --radius-md: 14px; --radius-lg: 24px; --radius-pill: 999px;
+
+  /* ---------- MOTION (the "slow pour" feel) ---------- */
+  --ease-pour: cubic-bezier(0.22, 1, 0.36, 1);   /* weighted ease-out */
+  --ease-ui:   cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-micro:  160ms;
+  --dur-ui:     320ms;
+  --dur-reveal: 640ms;
+  --dur-brew:   1600ms;
+
+  /* ---------- LAYOUT ---------- */
+  --measure: 68ch;          /* readable line length */
+  --container: 1160px;
+  --gutter: clamp(20px, 5vw, 64px);
+}
+
+/* Motion off → durations collapse, but easings stay valid. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-micro: 0ms; --dur-ui: 0ms; --dur-reveal: 0ms; --dur-brew: 0ms;
+  }
+}
