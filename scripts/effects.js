@@ -20,6 +20,7 @@ if (disabled) {
   initSplitText().finally(() => root.classList.remove("pre-fx"));
 }
 
+
 /* ---- [data-fx~="scroll-avatar"] : crossfade standing -> drinking on scroll ----
    Sets --scroll (0 at top, 1 at bottom) so CSS crossfades the two poses. */
 function initScrollAvatar() {
@@ -106,3 +107,4 @@ async function initSplitText() {
     /* CDN/module failure: caller removes .pre-fx, so the text simply shows. */
   }
 }
+

@@ -33,6 +33,11 @@
 .js-motion .shelf > [data-reveal]:nth-child(3) { --reveal-delay: 240ms; }
 .js-motion .shelf > [data-reveal]:nth-child(4) { --reveal-delay: 360ms; }
 .js-motion .shelf > [data-reveal]:nth-child(5) { --reveal-delay: 480ms; }
+/* capability cards: row-1 stagger (cards 1-3), row-2 stagger (cards 4-5) */
+.js-motion .capabilities > [data-reveal]:nth-child(2) { --reveal-delay: 110ms; }
+.js-motion .capabilities > [data-reveal]:nth-child(3) { --reveal-delay: 220ms; }
+.js-motion .capabilities > [data-reveal]:nth-child(4) { --reveal-delay: 110ms; }
+.js-motion .capabilities > [data-reveal]:nth-child(5) { --reveal-delay: 220ms; }
 
 /* ---- Effect: hero entrance (CSS, on load) ---- */
 @keyframes heroFade { from { opacity: 0; } to { opacity: 1; } }
