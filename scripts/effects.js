@@ -15,7 +15,24 @@ if (disabled) {
 } else {
   root.classList.add("js-motion"); // arms the CSS effect layer
   initReveal();
+  initFill();
   initSplitText().finally(() => root.classList.remove("pre-fx"));
+}
+
+/* ---- [data-fx~="fill"] : directional fill grows from the cursor entry point ----
+   Sets --fx-x / --fx-y to the pointer position on enter and leave, so the CSS
+   circle grows from where the cursor entered and retreats toward where it left. */
+function initFill() {
+  const els = document.querySelectorAll('[data-fx~="fill"]');
+  els.forEach((el) => {
+    const setOrigin = (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--fx-x", ((e.clientX - r.left) / r.width) * 100 + "%");
+      el.style.setProperty("--fx-y", ((e.clientY - r.top) / r.height) * 100 + "%");
+    };
+    el.addEventListener("pointerenter", setOrigin);
+    el.addEventListener("pointerleave", setOrigin);
+  });
 }
 
 /* ---- [data-reveal] : fade/rise in on scroll ---- */

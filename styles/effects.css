@@ -57,6 +57,24 @@
 .js-motion .fx-pour:active { transform: translateY(0) scale(0.98); }
 .js-motion .fx-pour:hover .arw { transform: translateX(3px); }   /* icon nudge */
 
+/* ---- Effect: directional fill button  [data-fx~="fill"] (JS sets origin) ----
+   A warm fill grows from where the cursor ENTERS and retreats toward the exit.
+   PLACEHOLDERS to swap from your Figma skin:
+     --fx-fill-color  (solid or gradient)   --fx-fill-dur  (duration)
+   Label/icon stay above the fill (isolation + ::before z-index:-1). */
+[data-fx~="fill"] { position: relative; isolation: isolate; overflow: hidden; }
+[data-fx~="fill"]::before {
+  content: ""; position: absolute; z-index: -1;
+  left: var(--fx-x, 50%); top: var(--fx-y, 50%);
+  width: 150%; aspect-ratio: 1; border-radius: 50%;
+  background: var(--fx-fill-color, var(--accent-gradient));
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform var(--fx-fill-dur, 450ms) var(--ease-pour);
+}
+.js-motion [data-fx~="fill"] { transition: transform var(--dur-micro) var(--ease-pour); }
+.js-motion [data-fx~="fill"]:hover::before { transform: translate(-50%, -50%) scale(1); }
+.js-motion [data-fx~="fill"]:active { transform: scale(0.98); }
+
 /* ---- Effect: splitText  [data-fx~="splittext"] (JS: anime.js) ---- */
 /* Hide targets until the registry processes them, so words don't flash before
    animating. The inline 1.5s fallback + reduced-motion/kill-switch paths all
