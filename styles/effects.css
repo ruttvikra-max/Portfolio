@@ -40,6 +40,23 @@
 .js-motion .hero__copy       { animation: heroFade 0.8s var(--ease-pour) backwards; }
 .js-motion .hero__stage-wrap { animation: heroRise 1s var(--ease-pour) 0.1s backwards; }
 
+/* ---- Effect: "pour" button micro-interaction  .fx-pour ----
+   Heat gradient pours up into the button on hover; weighted press on click.
+   Sweep + lift are gated under .js-motion so reduced-motion keeps a static
+   button (base hover/focus from base.css still gives affordance). */
+.fx-pour { position: relative; isolation: isolate; overflow: hidden; }
+.fx-pour::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--accent-gradient);
+  transform: translateY(100%);
+  transition: transform var(--dur-ui) var(--ease-pour);
+}
+.js-motion .fx-pour { transition: transform var(--dur-micro) var(--ease-pour); }
+.js-motion .fx-pour:hover::after { transform: translateY(0); }   /* pour up */
+.js-motion .fx-pour:hover { transform: translateY(-2px); }
+.js-motion .fx-pour:active { transform: translateY(0) scale(0.98); }
+.js-motion .fx-pour:hover .arw { transform: translateX(3px); }   /* icon nudge */
+
 /* ---- Effect: splitText  [data-fx~="splittext"] (JS: anime.js) ---- */
 /* Hide targets until the registry processes them, so words don't flash before
    animating. The inline 1.5s fallback + reduced-motion/kill-switch paths all

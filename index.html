@@ -33,13 +33,13 @@
 
   <!-- NAV -->
   <header class="nav">
-    <nav class="shell nav__inner" aria-label="Primary">
-      <a class="brand" href="#top"><span class="dot" aria-hidden="true"></span>Ruttvik</a>
+    <nav class="nav__inner" aria-label="Primary">
+      <a class="brand" href="#top">Ruttvik Aron</a>
       <div class="nav__links">
         <a class="nav-anchor" href="#work">Work</a>
         <a class="nav-anchor" href="#shelf">Bookshelf</a>
         <a class="nav-anchor" href="#footer">Contact</a>
-        <a class="btn-ghost" href="#footer">Let's talk</a>
+        <a class="btn-cta fx-pour" href="#footer">Let's Talk</a>
       </div>
     </nav>
   </header>
@@ -50,31 +50,28 @@
       <div class="hero__inner">
         <div class="hero__copy">
           <h1 id="hero-title" class="hero-statement" data-fx="splittext">
-            Hey! I'm <span class="hl hl--name"><span class="arw" aria-hidden="true">&rarr;</span>Ruttvik</span>. Design is my
-            <span class="hl hl--ikigai"><span class="arw" aria-hidden="true">&rarr;</span>Ikigai</span> &mdash; I craft
-            <a class="hl hl--make" href="#work"><span class="arw" aria-hidden="true">&rarr;</span>products</a>,
-            <a class="hl hl--make" href="#work"><span class="arw" aria-hidden="true">&rarr;</span>systems</a> &amp;
-            <a class="hl hl--make" href="#work"><span class="arw" aria-hidden="true">&rarr;</span>brands</a>
+            Hey! I'm <span class="hl hl--name">Ruttvik</span>. Design is my
+            <span class="hl hl--ikigai">Ikigai</span> &mdash; I craft
+            <span class="hl hl--make">products</span>,
+            <span class="hl hl--make">systems</span> &amp;
+            <span class="hl hl--make">brands</span>
             the way good coffee's made: slow, intentional, worth the wait. Got something in mind?
-            <a class="hl hl--cta" href="#footer"><span class="arw" aria-hidden="true">&rarr;</span>Get in touch</a>
           </h1>
+          <a class="btn-cta fx-pour" href="#footer">
+            Get in Touch
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
 
+        <div class="hero__stage-wrap">
           <div class="brew-row" aria-label="House brews">
             <span class="brew-chip">Espresso</span>
             <span class="brew-chip">Cappuccino</span>
             <span class="brew-chip">Latte</span>
           </div>
-        </div>
-
-        <!-- Tier-0 placeholder for the interactive machine/avatar -->
-        <div class="hero__stage-wrap">
-          <div class="stage" role="img" aria-label="A freshly poured cup of coffee, steaming.">
-            <span class="stage__tag">hero · static placeholder</span>
-            <div class="mug">
-              <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
-              <div class="mug__body"><div class="mug__coffee"></div></div>
-              <div class="mug__handle"></div>
-            </div>
+          <div class="stage">
+            <img class="stage__machine" src="Assets/source/machine.png" alt="A clay-style espresso machine" />
+            <img class="stage__mug" src="Assets/source/mug.png" alt="" />
           </div>
         </div>
       </div>
@@ -151,7 +148,7 @@
           <a href="#">Read.cv</a>
         </div>
       </div>
-      <a class="refill" href="#top">Refill ↺</a>
+      <a class="refill fx-pour" href="#top">Refill ↺</a>
     </div>
     <div class="shell colophon">
       <span>Slow Pour — built craft-first.</span>

@@ -11,9 +11,9 @@
   --coffee-kraft:  #C7AD9E;  /* texture       */
   --coffee-steam:  #8082A6;  /* cool neutral  */
   --coffee-roast:  #29303D;  /* ink / dark    */
-  --heat-300:      #F2C230;  /* warm          */
-  --heat-500:      #F2921D;  /* mid           */
-  --heat-700:      #F24F13;  /* hot           */
+  --heat-300:      #FFC309;  /* primary-1 (yellow)     */
+  --heat-500:      #FF9400;  /* primary-2 (orange)     */
+  --heat-700:      #FF4E02;  /* primary-3 (red-orange) */
 
   /* ---------- SEMANTIC: SURFACES ---------- */
   --surface-canvas:   var(--coffee-crema);
