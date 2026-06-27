@@ -1,0 +1,47 @@
+/* =============================================================
+   SLOW POUR — EFFECTS LAYER (plug & play)
+   All page-level motion lives here, decoupled from layout/components.
+
+   Gate:         .js-motion   — added to <html> by scripts/effects.js, but only
+                                when motion is allowed. CSS effects are scoped
+                                under it, so they are inert until armed.
+   Kill switch:  <html data-fx-off>  — registry wires nothing; content visible.
+   Reduced motion / no-JS:     effects never activate; content fully visible.
+   Dials:        timing + easing come from tokens.css (--dur-*, --ease-*).
+
+   Apply effects with attributes (the plug-and-play surface):
+     data-reveal                  -> fade/rise in on scroll
+     data-fx="splittext"          -> hero word/char reveal (anime.js)
+   See EFFECTS.md for the full table.
+   ============================================================= */
+
+/* ---- Effect: scroll reveal  [data-reveal] ---- */
+.js-motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur-reveal) var(--ease-pour),
+              transform var(--dur-reveal) var(--ease-pour);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.js-motion [data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* per-row stagger (horizontal groups, so items don't pop in unison) */
+.js-motion .cards > [data-reveal]:nth-child(2) { --reveal-delay: 140ms; }
+.js-motion .cards > [data-reveal]:nth-child(3) { --reveal-delay: 280ms; }
+.js-motion .shelf > [data-reveal]:nth-child(2) { --reveal-delay: 120ms; }
+.js-motion .shelf > [data-reveal]:nth-child(3) { --reveal-delay: 240ms; }
+.js-motion .shelf > [data-reveal]:nth-child(4) { --reveal-delay: 360ms; }
+.js-motion .shelf > [data-reveal]:nth-child(5) { --reveal-delay: 480ms; }
+
+/* ---- Effect: hero entrance (CSS, on load) ---- */
+@keyframes heroFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroRise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+.js-motion .hero__copy       { animation: heroFade 0.8s var(--ease-pour) backwards; }
+.js-motion .hero__stage-wrap { animation: heroRise 1s var(--ease-pour) 0.1s backwards; }
+
+/* ---- Effect: splitText  [data-fx~="splittext"] (JS: anime.js) ---- */
+/* Hide targets until the registry processes them, so words don't flash before
+   animating. The inline 1.5s fallback + reduced-motion/kill-switch paths all
+   remove .pre-fx, so text is never left stuck hidden. */
+.pre-fx [data-fx~="splittext"] { opacity: 0; }
