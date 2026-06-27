@@ -239,3 +239,16 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: va
 
 /* Page motion lives in styles/effects.css (the plug-and-play effects layer).
    base.css keeps layout + component styling only. */
+
+/* ---------- MOBILE REFINEMENTS ---------- */
+@media (max-width: 880px) {
+  body::before { height: 1120px; }       /* grid covers the taller stacked hero */
+  .section { padding-block: var(--space-6); }
+}
+@media (max-width: 600px) {
+  .nav__inner { padding: 10px 14px 10px 18px; }
+  .brand { font-size: 1.3rem; }
+  .section { padding-block: var(--space-5); }
+  .section__head { margin-bottom: var(--space-4); }
+  .hero__copy .btn-cta { width: 100%; justify-content: center; }  /* full-width tap target */
+}
