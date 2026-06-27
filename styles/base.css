@@ -278,3 +278,25 @@ a.hl--cta:hover::before { opacity: 1; }
 }
 .refill:hover { transform: translateY(-2px); }
 .colophon { border-top: 1px solid var(--border-inverse); padding-block: var(--space-3); color: var(--text-muted-inv); font-size: var(--step-caption); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- MOTION: scroll reveal (armed only when JS adds .js-motion) ---------- */
+/* Default (no-JS / reduced-motion): elements are fully visible — never hidden. */
+.js-motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur-reveal) var(--ease-pour),
+              transform var(--dur-reveal) var(--ease-pour);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.js-motion [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* stagger the horizontal rows so items don't pop in unison */
+.js-motion .cards > [data-reveal]:nth-child(2) { --reveal-delay: 140ms; }
+.js-motion .cards > [data-reveal]:nth-child(3) { --reveal-delay: 280ms; }
+.js-motion .shelf > [data-reveal]:nth-child(2) { --reveal-delay: 120ms; }
+.js-motion .shelf > [data-reveal]:nth-child(3) { --reveal-delay: 240ms; }
+.js-motion .shelf > [data-reveal]:nth-child(4) { --reveal-delay: 360ms; }
+.js-motion .shelf > [data-reveal]:nth-child(5) { --reveal-delay: 480ms; }

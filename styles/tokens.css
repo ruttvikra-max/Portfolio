@@ -65,7 +65,7 @@
   --ease-ui:   cubic-bezier(0.4, 0, 0.2, 1);
   --dur-micro:  160ms;
   --dur-ui:     320ms;
-  --dur-reveal: 640ms;
+  --dur-reveal: 1100ms;
   --dur-brew:   1600ms;
 
   /* ---------- LAYOUT ---------- */

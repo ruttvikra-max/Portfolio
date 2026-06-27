@@ -66,36 +66,36 @@
 
     <!-- WHAT I DO -->
     <section class="section shell" id="what" aria-labelledby="what-title">
-      <div class="section__head">
+      <div class="section__head" data-reveal>
         <p class="eyebrow">What I do</p>
         <h2 id="what-title">Five things, done with care.</h2>
       </div>
       <div class="pillars">
-        <article class="pillar"><div><h3><span class="u">Product design</span></h3><p>End-to-end product thinking — from problem framing to shipped, measurable interfaces.</p></div><span class="pillar__no">01</span></article>
-        <article class="pillar"><div><h3><span class="u">Design systems</span></h3><p>Token architecture and component libraries that keep teams fast and consistent.</p></div><span class="pillar__no">02</span></article>
-        <article class="pillar"><div><h3><span class="u">Interface direction</span></h3><p>Setting the visual and interaction language a product speaks in.</p></div><span class="pillar__no">03</span></article>
-        <article class="pillar"><div><h3><span class="u">Web design</span></h3><p>Marketing sites and web apps that load fast and feel considered.</p></div><span class="pillar__no">04</span></article>
-        <article class="pillar"><div><h3><span class="u">Brand identity</span></h3><p>Voice, marks, and systems that make a product recognisably itself.</p></div><span class="pillar__no">05</span></article>
+        <article class="pillar" data-reveal><div><h3><span class="u">Product design</span></h3><p>End-to-end product thinking — from problem framing to shipped, measurable interfaces.</p></div><span class="pillar__no">01</span></article>
+        <article class="pillar" data-reveal><div><h3><span class="u">Design systems</span></h3><p>Token architecture and component libraries that keep teams fast and consistent.</p></div><span class="pillar__no">02</span></article>
+        <article class="pillar" data-reveal><div><h3><span class="u">Interface direction</span></h3><p>Setting the visual and interaction language a product speaks in.</p></div><span class="pillar__no">03</span></article>
+        <article class="pillar" data-reveal><div><h3><span class="u">Web design</span></h3><p>Marketing sites and web apps that load fast and feel considered.</p></div><span class="pillar__no">04</span></article>
+        <article class="pillar" data-reveal><div><h3><span class="u">Brand identity</span></h3><p>Voice, marks, and systems that make a product recognisably itself.</p></div><span class="pillar__no">05</span></article>
       </div>
     </section>
 
     <!-- WORK (dark) -->
     <section class="section" id="work" aria-labelledby="work-title">
       <div class="shell work" style="padding: var(--space-6) var(--gutter);">
-        <div class="section__head">
+        <div class="section__head" data-reveal>
           <p class="eyebrow">Selected work</p>
           <h2 id="work-title">Three brews I'm proud of.</h2>
         </div>
         <div class="cards">
-          <a class="card" href="#" aria-label="Case study: Fintech dashboard">
+          <a class="card" href="#" data-reveal aria-label="Case study: Fintech dashboard">
             <div class="card__cover"></div>
             <div class="card__body"><p class="card__role">Product design · 2025</p><p class="card__title">Fintech dashboard</p><p class="card__metric">Cut time-to-insight by 40%.</p><span class="card__more">Read case</span></div>
           </a>
-          <a class="card" href="#" aria-label="Case study: Design system rebuild">
+          <a class="card" href="#" data-reveal aria-label="Case study: Design system rebuild">
             <div class="card__cover"></div>
             <div class="card__body"><p class="card__role">Design system · 2024</p><p class="card__title">System rebuild</p><p class="card__metric">One source of truth, 6 squads.</p><span class="card__more">Read case</span></div>
           </a>
-          <a class="card" href="#" aria-label="Case study: Mobile onboarding">
+          <a class="card" href="#" data-reveal aria-label="Case study: Mobile onboarding">
             <div class="card__cover"></div>
             <div class="card__body"><p class="card__role">Interface · 2024</p><p class="card__title">Mobile onboarding</p><p class="card__metric">+18% activation.</p><span class="card__more">Read case</span></div>
           </a>
@@ -106,16 +106,16 @@
     <!-- BOOKSHELF (kraft) -->
     <section class="section" id="shelf" aria-labelledby="shelf-title">
       <div class="shell shelf-section" style="padding: var(--space-6) var(--gutter);">
-        <div class="section__head">
+        <div class="section__head" data-reveal>
           <p class="eyebrow">From my shelf</p>
           <h2 id="shelf-title">Books I press into people's hands.</h2>
         </div>
         <div class="shelf" role="list" aria-label="Recommended books">
-          <button class="spine s1" role="listitem">The Design of Everyday Things</button>
-          <button class="spine s2" role="listitem">Refactoring UI</button>
-          <button class="spine s3" role="listitem">Thinking, Fast and Slow</button>
-          <button class="spine s4" role="listitem">Hooked</button>
-          <button class="spine s5" role="listitem">Articulating Design Decisions</button>
+          <button data-reveal class="spine s1" role="listitem">The Design of Everyday Things</button>
+          <button data-reveal class="spine s2" role="listitem">Refactoring UI</button>
+          <button data-reveal class="spine s3" role="listitem">Thinking, Fast and Slow</button>
+          <button data-reveal class="spine s4" role="listitem">Hooked</button>
+          <button data-reveal class="spine s5" role="listitem">Articulating Design Decisions</button>
         </div>
         <p class="shelf-note">Tap a spine — previews arrive in a later build tier.</p>
       </div>
@@ -144,5 +144,6 @@
   </footer>
 
   <script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
+  <script src="scripts/motion.js" defer></script>
 </body>
 </html>
