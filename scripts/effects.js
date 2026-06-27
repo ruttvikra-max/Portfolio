@@ -16,7 +16,23 @@ if (disabled) {
   root.classList.add("js-motion"); // arms the CSS effect layer
   initReveal();
   initFill();
+  initScrollAvatar();
   initSplitText().finally(() => root.classList.remove("pre-fx"));
+}
+
+/* ---- [data-fx~="scroll-avatar"] : crossfade standing -> drinking on scroll ----
+   Sets --scroll (0 at top, 1 at bottom) so CSS crossfades the two poses. */
+function initScrollAvatar() {
+  const el = document.querySelector('[data-fx~="scroll-avatar"]');
+  if (!el) return;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    el.style.setProperty("--scroll", p.toFixed(3));
+  };
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
 }
 
 /* ---- [data-fx~="fill"] : directional fill grows from the cursor entry point ----

@@ -23,6 +23,7 @@ Add an attribute to any element:
 | Hero entrance | (auto on `.hero__copy` / `.hero__stage-wrap`) | edit `heroFade` / `heroRise` in `effects.css` | CSS |
 | Pour button | `.fx-pour` (class) | uses `--accent-gradient` | CSS |
 | Directional fill button | `data-fx="fill"` | `--fx-fill-color`, `--fx-fill-dur` (placeholders) | CSS + JS pointer origin |
+| Scroll avatar companion | `data-fx="scroll-avatar"` | crossfades standing→drinking via `--scroll` | CSS + JS scroll progress |
 
 Remove the attribute → effect gone. That's the whole contract.
 

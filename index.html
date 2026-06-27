@@ -156,6 +156,12 @@
     </div>
   </footer>
 
+  <!-- scroll companion: avatar crossfades standing -> drinking as you scroll -->
+  <div class="avatar" data-fx="scroll-avatar" aria-hidden="true">
+    <img class="avatar__stand" src="Assets/source/avatar-stand.png" alt="" />
+    <img class="avatar__sip" src="Assets/source/avatar-sip.png" alt="" />
+  </div>
+
   <script>document.getElementById("yr").textContent = new Date().getFullYear();</script>
 
   <!-- effects registry: reveal + splitText, plug & play (see EFFECTS.md) -->

@@ -75,6 +75,20 @@
 .js-motion [data-fx~="fill"]:hover::before { transform: translate(-50%, -50%) scale(1); }
 .js-motion [data-fx~="fill"]:active { transform: scale(0.98); }
 
+/* ---- Effect: scroll avatar companion  [data-fx~="scroll-avatar"] ----
+   Crossfades the standing avatar into the drinking pose as the page scrolls
+   (JS sets --scroll 0..1). Default (no JS / reduced motion): static standing. */
+[data-fx~="scroll-avatar"] {
+  position: fixed; right: 16px; bottom: 0; z-index: 40;
+  width: clamp(120px, 11vw, 168px); pointer-events: none;
+}
+[data-fx~="scroll-avatar"] img { display: block; width: 100%; height: auto; }
+[data-fx~="scroll-avatar"] .avatar__stand { opacity: 1; }
+[data-fx~="scroll-avatar"] .avatar__sip { position: absolute; right: 0; bottom: 0; opacity: 0; }
+.js-motion [data-fx~="scroll-avatar"] .avatar__stand { opacity: calc(1 - var(--scroll, 0)); }
+.js-motion [data-fx~="scroll-avatar"] .avatar__sip   { opacity: var(--scroll, 0); }
+@media (max-width: 600px) { [data-fx~="scroll-avatar"] { display: none; } }
+
 /* ---- Effect: splitText  [data-fx~="splittext"] (JS: anime.js) ---- */
 /* Hide targets until the registry processes them, so words don't flash before
    animating. The inline 1.5s fallback + reduced-motion/kill-switch paths all
