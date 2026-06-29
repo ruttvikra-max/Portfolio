@@ -1,0 +1,70 @@
+/* Global base — editorial / Constructivist foundation.
+   Component-level styles live with their components; this is reset + page base. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: var(--lh-tight);
+  font-weight: 400;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 1.25rem;
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Page container — sections manage their own full-bleed layout */
+.case-study {
+  width: 100%;
+  overflow-x: hidden;
+}

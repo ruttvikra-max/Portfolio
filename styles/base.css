@@ -155,13 +155,14 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: va
   padding: 9px 20px;
 }
 
-/* hero stage — clay machine + mug images */
-.stage { position: relative; width: 100%; display: block; }
-.stage__machine { width: 100%; height: auto; display: block; }
-.stage__mug {
-  position: absolute; width: 22%; height: auto;
-  left: 50%; bottom: 4%; transform: translateX(-44%);
-  filter: drop-shadow(0 8px 14px rgba(41, 48, 61, 0.12));
+/* hero stage — video canvas (ACT I) */
+.hero__canvas {
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1 / 1;
+  display: block;
+  border-radius: 20px;
+  background: var(--coffee-crema);   /* placeholder tint while video preloads */
 }
 
 @media (max-width: 880px) {
@@ -169,6 +170,7 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: va
   .hero__stage-wrap { order: -1; }
   .hero__stage-wrap .stage { max-width: 360px; }
 }
+
 
 /* ---------- WHAT I DO — capability frames ---------- */
 .capabilities {
@@ -328,32 +330,13 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: va
   color: var(--text-muted-inv);
 }
 
-/* 3D model placeholder */
-.work__3d {
-  border: 1px solid rgba(245, 236, 210, 0.14);
-  border-radius: var(--radius-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+/* Video canvas — work section right column */
+.work__canvas {
+  display: block;
+  width: 100%;
   min-height: 260px;
-  text-align: center;
-  padding: var(--space-4);
-}
-
-.work__3d-label {
-  font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-  color: rgba(245, 236, 210, 0.28);
-  letter-spacing: var(--tracking-tight);
-}
-
-.work__3d-sub {
-  font-size: var(--step-caption);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-eyebrow);
-  color: rgba(245, 236, 210, 0.18);
+  border-radius: var(--radius-md);
+  background: rgba(245, 236, 210, 0.05);
 }
 
 /* Case study horizontal rail */
@@ -477,7 +460,7 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: va
     grid-template-columns: 1fr;
     padding: 56px 40px 40px;
   }
-  .work__3d { min-height: 180px; }
+  .work__canvas { min-height: 180px; }
   .case-rail {
     padding: 0 40px 56px;
     scroll-padding-left: 40px;
@@ -618,12 +601,14 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: va
 .spine.s9  { background: #4A6959; width: 44px; height: 96%; }
 .spine.s10 { background: #C4913A; width: 44px; height: 92%; }
 
-/* Right column: 3D avatar/model slot — Tier 2 R3F mounts here. */
-.shelf-avatar-slot {
+/* Video canvas — bookshelf section right column */
+.shelf__canvas {
+  display: block;
+  width: 100%;
   align-self: stretch;
   min-height: clamp(300px, 50vw, 520px);
   border-radius: 12px;
-  border: 2px dashed color-mix(in srgb, var(--coffee-roast) 15%, transparent);
+  background: transparent;
 }
 
 /* ── Book modal ── */
@@ -927,7 +912,7 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: va
   .footer__bottom,
   .colophon { padding-inline: 40px; }
   .shelf-inner { grid-template-columns: 1fr; gap: 28px; }
-  .shelf-avatar-slot { min-height: 200px; }
+  .shelf__canvas { min-height: 200px; }
 }
 @media (max-width: 540px) {
   .hero,

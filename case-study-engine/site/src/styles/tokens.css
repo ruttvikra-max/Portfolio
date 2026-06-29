@@ -1,0 +1,51 @@
+/* Design tokens — Rules Engine Case Study
+   Mirrored from docs/color-scheme/tokens.css. Single source for colors + type.
+   Swappable asset: change values here to re-theme the whole site. */
+
+:root {
+  /* Primary */
+  --color-primary-yellow: #EFB717;
+  --color-primary-orange: #EC700A;
+  --color-primary-red:    #DB3A34;
+
+  /* Secondary */
+  --color-secondary-blue:      #2A6AF1;
+  --color-secondary-blue-deep: #0A399E;
+
+  /* Tertiary / neutrals */
+  --color-neutral-light: #B0B9C8;
+  --color-neutral-mid:   #465167;
+  --color-neutral-dark:  #29303D;
+
+  /* Background */
+  --color-bg: #FEF9EC;
+
+  /* Semantic aliases */
+  --text-primary:   var(--color-neutral-dark);
+  --text-secondary: var(--color-neutral-mid);
+  --text-muted:     var(--color-neutral-light);
+  --accent:         var(--color-primary-red);
+  --link:           var(--color-secondary-blue);
+  --surface:        var(--color-bg);
+
+  /* Typography */
+  --font-display: "Hecate Display", Georgia, serif;        /* PRIMARY */
+  --font-body:    "001 Sans Serif", system-ui, sans-serif; /* SECONDARY */
+
+  /* Type scale (editorial) */
+  --fs-hero:   clamp(3rem, 8vw, 7rem);
+  --fs-h1:     clamp(2.25rem, 5vw, 4rem);
+  --fs-h2:     clamp(1.75rem, 3.5vw, 2.75rem);
+  --fs-h3:     1.5rem;
+  --fs-body:   1.125rem;
+  --fs-small:  0.9375rem;
+
+  --lh-tight: 1.05;
+  --lh-snug:  1.2;
+  --lh-body:  1.6;
+
+  /* Layout */
+  --measure: 68ch;          /* readable line length */
+  --gutter:  clamp(1.25rem, 5vw, 4rem);
+  --rule:    1px solid var(--color-neutral-dark);
+}

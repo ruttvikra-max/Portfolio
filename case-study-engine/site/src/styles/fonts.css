@@ -1,0 +1,26 @@
+/* @font-face — paths relative to this file (src/styles/) into src/assets/fonts/ */
+
+@font-face {
+  font-family: "Hecate Display";
+  src: url("../assets/fonts/Hecate Display-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hecate Display";
+  src: url("../assets/fonts/Hecate Display-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* 001 Sans Serif — DEMO license. Confirm full license before public deploy. */
+@font-face {
+  font-family: "001 Sans Serif";
+  src: url("../assets/fonts/001SansSerif DEMO-SVG.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

@@ -113,15 +113,8 @@
         </div>
 
         <div class="hero__stage-wrap">
-          <div class="brew-row" aria-label="House brews">
-            <span class="brew-chip">Espresso</span>
-            <span class="brew-chip">Cappuccino</span>
-            <span class="brew-chip">Latte</span>
-          </div>
-          <div class="stage">
-            <img class="stage__machine" src="Assets/source/machine.png" alt="A clay-style espresso machine" />
-            <img class="stage__mug" src="Assets/source/mug.png" alt="" />
-          </div>
+
+          <canvas id="hero-canvas" class="hero__canvas" aria-label="Clay espresso machine animation"></canvas>
         </div>
       </div>
     </section>
@@ -215,27 +208,24 @@
                 <p class="work__sub">Healthcare, SaaS, and enterprise platforms designed to simplify operational complexity through systems thinking.</p>
               </div>
             </div>
-            <div class="work__3d" aria-hidden="true">
-              <span class="work__3d-label">The 3D model</span>
-              <span class="work__3d-sub">Interactive &mdash; Tier 2</span>
-            </div>
+            <canvas id="work-canvas" class="work__canvas" aria-label="Animation companion — work section"></canvas>
           </div>
 
           <!-- Horizontal case study rail -->
           <div class="case-rail">
 
-            <a class="case-card" href="#" data-reveal aria-label="Case study: Fintech dashboard">
+            <a class="case-card" href="case-study-engine/site/dist/" data-reveal aria-label="Case study: Rules Engine">
               <div class="case-card__cover"></div>
               <div class="case-card__body">
                 <div class="case-card__top">
-                  <span class="case-card__name">Fintech dashboard</span>
-                  <span class="case-card__tags">Product design &middot; 2025</span>
+                  <span class="case-card__name">Rules Engine</span>
+                  <span class="case-card__tags">Product design &middot; Healthcare &middot; 2025</span>
                 </div>
-                <p class="case-card__desc">Cut time-to-insight by 40% &mdash; rethinking how analysts navigate complex financial data across live market feeds.</p>
+                <p class="case-card__desc">Natural-language rule authoring for US healthcare &mdash; cutting rule-change lead time from three weeks to three days.</p>
                 <ul class="case-card__list">
-                  <li>Reduced load time from 8 s to under 2 s</li>
-                  <li>Unified 6 data views into a composable workspace</li>
-                  <li>Shipped in 3 sprints with zero regression</li>
+                  <li>Eliminated engineer dependency for ops rule changes</li>
+                  <li>Empowered non-technical teams to author and ship rules</li>
+                  <li>Shipped across a multi-squad healthcare platform</li>
                 </ul>
                 <span class="case-card__cta">Read case study <span aria-hidden="true">→</span></span>
               </div>
@@ -350,8 +340,7 @@
 
         </div><!-- /.shelf-left -->
 
-        <!-- Right column: avatar/3D model slot — Tier 2: replace with R3F canvas mount -->
-        <div class="shelf-avatar-slot" aria-hidden="true" data-reveal></div>
+        <canvas id="shelf-canvas" class="shelf__canvas" aria-label="Animation companion — bookshelf section"></canvas>
 
       </div>
 
@@ -440,7 +429,7 @@
       <div class="footer__meta-pair">
         <div class="footer__strip-meta">
           <span class="footer__strip-label">Last updated</span>
-          <span class="footer__strip-value" id="last-updated">June 29th, 2026</span>
+          <span class="footer__strip-value" id="last-updated">June 30th, 2026</span>
         </div>
         <div class="footer__strip-meta">
           <span class="footer__strip-label">Currently</span>
@@ -464,5 +453,9 @@
 
   <!-- Tier 2 React island: SplashCursor + card tilt (built by Vite → scripts/tier2.js) -->
   <script type="module" src="scripts/tier2.js"></script>
+
+  <!-- Scroll-linked video companion (ACT II + ACT III) — desktop only, no build step -->
+  <script src="src/video-scrub.js" defer></script>
+
 </body>
 </html>
