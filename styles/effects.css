@@ -29,10 +29,8 @@
 /* per-row stagger (horizontal groups, so items don't pop in unison) */
 .js-motion .cards > [data-reveal]:nth-child(2) { --reveal-delay: 140ms; }
 .js-motion .cards > [data-reveal]:nth-child(3) { --reveal-delay: 280ms; }
-.js-motion .shelf > [data-reveal]:nth-child(2) { --reveal-delay: 120ms; }
-.js-motion .shelf > [data-reveal]:nth-child(3) { --reveal-delay: 240ms; }
-.js-motion .shelf > [data-reveal]:nth-child(4) { --reveal-delay: 360ms; }
-.js-motion .shelf > [data-reveal]:nth-child(5) { --reveal-delay: 480ms; }
+/* shelf editorial + stage stagger */
+.js-motion .shelf-stage[data-reveal] { --reveal-delay: 140ms; }
 /* capability cards: row-1 stagger (cards 1-3), row-2 stagger (cards 4-5) */
 .js-motion .capabilities > [data-reveal]:nth-child(2) { --reveal-delay: 110ms; }
 .js-motion .capabilities > [data-reveal]:nth-child(3) { --reveal-delay: 220ms; }
@@ -79,6 +77,27 @@
 .js-motion [data-fx~="fill"] { transition: transform var(--dur-micro) var(--ease-pour); }
 .js-motion [data-fx~="fill"]:hover::before { transform: translate(-50%, -50%) scale(1); }
 .js-motion [data-fx~="fill"]:active { transform: scale(0.98); }
+
+/* ---- Effect: card tilt + spotlight (Tier 2, wired by src/components/CardTilt.jsx) ----
+   JS adds .is-tilted and sets --spotlight-x / --spotlight-y on mousemove.
+   The ::after pseudo-element renders the radial spotlight. */
+.case-card { isolation: isolate; }
+.case-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+    rgba(255,148,0,0.10) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.case-card.is-tilted::after { opacity: 1; }
 
 /* ---- Effect: scroll avatar companion  [data-fx~="scroll-avatar"] ----
    Crossfades the standing avatar into the drinking pose as the page scrolls

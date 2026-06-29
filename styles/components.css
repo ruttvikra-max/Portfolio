@@ -1,0 +1,95 @@
+/* Slow Pour — interactive component styles
+   Single source of truth for button contracts.
+   Tokens come from tokens.css. Motion comes from effects.css.
+   ─────────────────────────────────────────────────────────── */
+
+/* ── Shared base ── */
+.btn-cta,
+.btn-outlined {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: var(--step-body);
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* ── Filled — "Let's Talk" / "Get in Touch" ── */
+.btn-cta {
+  padding: 12px 28px;
+  border-radius: 16px;
+  background: var(--surface-inverse);
+  color: var(--text-on-inverse);
+  border: none;
+  --fx-fill-color: var(--accent-gradient);
+}
+.btn-cta svg { width: 20px; height: 20px; flex: 0 0 auto; }
+
+/* full-width on small screens */
+@media (max-width: 600px) {
+  .hero__copy .btn-cta { width: 100%; justify-content: center; }
+}
+
+/* ── Outlined — context-aware, used for Refill ── */
+.btn-outlined {
+  padding: 14px 28px;
+  border-radius: 16px;
+  background: transparent;
+  border: 1.5px solid currentColor;
+  /* light surface default: ink text, warm accent fill */
+  color: var(--text-primary);
+  --fx-fill-color: color-mix(in srgb, var(--accent) 25%, transparent);
+  /* needed for ::after burst to clip + stack correctly */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* on dark (inverse) surface → cream text + subtle cream shimmer fill */
+footer .btn-outlined {
+  color: var(--text-on-inverse);
+  --fx-fill-color: rgba(245, 236, 210, 0.13);
+}
+
+/* ── Click burst — ::after sits above directional fill ::before ── */
+.btn-outlined::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: center;
+  z-index: -1;
+  pointer-events: none;
+  /* exit: slow fade so it dissolves gracefully */
+  transition:
+    transform 350ms var(--ease-pour),
+    opacity 350ms var(--ease-pour);
+}
+
+/* mousedown hold — compress + burst blooms to fill the button */
+.js-motion .btn-outlined.is-burst-active {
+  transform: scale(0.97);
+  transition: transform 120ms var(--ease-pour);
+}
+.js-motion .btn-outlined.is-burst-active::after {
+  transform: scale(1.3);
+  opacity: 0.18;
+  /* enter: fast so it responds instantly to press */
+  transition:
+    transform 200ms var(--ease-pour),
+    opacity 140ms;
+}
+
+/* snap back on release */
+.js-motion .btn-outlined:not(.is-burst-active) {
+  transition: transform 320ms var(--ease-pour);
+}
