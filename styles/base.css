@@ -874,7 +874,6 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: va
   transform: translateY(-4px);
 }
 .social-tile svg { width: clamp(18px, 2.6vw, 26px); height: clamp(18px, 2.6vw, 26px); }
-
 /* refill button → styles/components.css (.btn-outlined) */
 
 .colophon {
