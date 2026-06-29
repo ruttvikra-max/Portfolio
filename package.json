@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
     "dev:html": "npx serve . -p 4321",
     "build:t2": "vite build",
     "watch:t2": "vite build --watch"

@@ -1,0 +1,25 @@
+#!/bin/bash
+# Auto-update "Last updated" date in index.html on every commit.
+
+DAY=$(date +%e | tr -d ' ')   # day without leading zero
+MONTH=$(date +%B)              # full month name
+YEAR=$(date +%Y)
+
+# Ordinal suffix (11th/12th/13th are exceptions)
+if [ "$DAY" -eq 11 ] || [ "$DAY" -eq 12 ] || [ "$DAY" -eq 13 ]; then
+  SUFFIX="th"
+else
+  case $((DAY % 10)) in
+    1) SUFFIX="st" ;;
+    2) SUFFIX="nd" ;;
+    3) SUFFIX="rd" ;;
+    *) SUFFIX="th" ;;
+  esac
+fi
+
+DATE_STR="$MONTH $DAY$SUFFIX, $YEAR"
+
+# Target only the span with id="last-updated" — leaves "Currently" untouched
+sed -i "s|<span class=\"footer__strip-value\" id=\"last-updated\">[^<]*</span>|<span class=\"footer__strip-value\" id=\"last-updated\">$DATE_STR</span>|" index.html
+
+git add index.html
