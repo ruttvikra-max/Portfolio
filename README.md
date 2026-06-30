@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Design System Intelligence Engine — Case Study
 
-## Getting Started
+A product-design case study built as a **Next.js app** (Next 16 · React 19 · Tailwind v4).
+This is the final, live case study. It is **not** a static HTML file — it must be run.
 
-First, run the development server:
+## ▶ Run it (this is the case study)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install      # required on every fresh clone — node_modules is gitignored
+npm run dev      # starts the dev server
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open **http://localhost:3000**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To build for production:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build && npm run start
+```
 
-## Learn More
+## ⚠ Do NOT open the archived HTML
 
-To learn more about Next.js, take a look at the following resources:
+`_reference/_archive/old-html-template.html` is the **old v1 template**, kept for
+reference only. Opening it in a browser shows the *outdated* design — it is **not**
+the final case study. The final case study only renders by running the Next.js app
+above (`npm run dev`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/app/             App Router entry (page.tsx composes all sections)
+src/components/site/  Case-study sections (Hero, Problem, Research, Personas,
+                      Market, TurningPoint, Solution, UnderTheHood, Outcome, …)
+src/components/       React-bits components (GlassIcons, BorderGlow, Folder,
+                      ChromaGrid, CardSwap)
+public/fonts/         Rengok (display); Roboto (body) loads via next/font
+_reference/           Archived source material (deck content, old v1 template) —
+                      reference only, not part of the live app
+```
